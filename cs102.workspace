@@ -2,19 +2,28 @@
 <CodeLite_Workspace Name="cs102" Database="">
   <Project Name="example-test" Path="example-test/example-test.project" Active="No"/>
   <Project Name="labA" Path="labA/labA.project" Active="No"/>
-  <Project Name="debugA" Path="debugA/debugA.project" Active="Yes"/>
+  <Project Name="debugA" Path="debugA/debugA.project" Active="No"/>
+  <Project Name="labB" Path="labB/labB.project" Active="No"/>
+  <Project Name="debugB" Path="debugB/debugB.project" Active="No"/>
+  <Project Name="collatz" Path="collatz/collatz.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="example-test" ConfigName="Debug"/>
       <Project Name="labA" ConfigName="Debug"/>
       <Project Name="debugA" ConfigName="Debug"/>
+      <Project Name="labB" ConfigName="Debug"/>
+      <Project Name="debugB" ConfigName="Debug"/>
+      <Project Name="collatz" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="example-test" ConfigName="Release"/>
       <Project Name="labA" ConfigName="Release"/>
       <Project Name="debugA" ConfigName="Release"/>
+      <Project Name="labB" ConfigName="Release"/>
+      <Project Name="debugB" ConfigName="Release"/>
+      <Project Name="collatz" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
