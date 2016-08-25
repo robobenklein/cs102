@@ -5,8 +5,8 @@
   <Project Name="debugA" Path="debugA/debugA.project" Active="No"/>
   <Project Name="labB" Path="labB/labB.project" Active="No"/>
   <Project Name="debugB" Path="debugB/debugB.project" Active="No"/>
-  <Project Name="collatz" Path="collatz/collatz.project" Active="No"/>
-  <Project Name="conditionals-tests" Path="conditionals-tests/conditionals-tests.project" Active="Yes"/>
+  <Project Name="collatz" Path="collatz/collatz.project" Active="Yes"/>
+  <Project Name="conditionals-tests" Path="conditionals-tests/conditionals-tests.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>

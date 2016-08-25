@@ -2,17 +2,17 @@
 
 using namespace std;
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-	char gender;
-    inf fcount = 0, mcount =0;
+    char gender;
+    int fcount = 0, mcount = 0;
     cout << "Enter gender: ";
     cin >> gender;
-    if (gender == 'F')
+    if(gender == 'F')
         fcount++;
     else
         mcount++;
-    
-    cout << "There are " << fcount << " females and " << mcount << " males."
-	return 0;
+
+    cout << "There are " << fcount << " females and " << mcount << " males.";
+    return 0;
 }
