@@ -13,6 +13,8 @@ unsigned long long modify(unsigned long long original)
         original = (original * 3) + 1;
         return original;
     } else {
+        // This was happenning when the number became negative.
+        // Accidentally converted unlonglong to an int32
         printf("Error: Something bad happened!");
         std::cout << std::endl << "The current number is: " << original;
         std::cout << std::endl << "Mod 2, it returns: " << (original % 2);
@@ -20,6 +22,8 @@ unsigned long long modify(unsigned long long original)
     return 1;
 }
 
+// Counts how many steps it takes for the number to reach 1, returns number of steps.
+// In and Out are unlonglong numbers.
 unsigned long long steps_until_1(unsigned long long begin)
 {
     unsigned long long current, steps;
@@ -32,6 +36,8 @@ unsigned long long steps_until_1(unsigned long long begin)
     return steps;
 }
 
+// Looks for the longest chain in the range 2 -> ending_point
+// Returns the number with the longest output chain.
 unsigned long long longest_chain_until(unsigned long long ending_point)
 {
     unsigned long long x, seq_length, maximum = 0, locator;
