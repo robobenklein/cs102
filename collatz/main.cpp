@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <thread>
 
 unsigned long long modify(unsigned long long original)
 {
@@ -57,6 +58,25 @@ unsigned long long longest_chain_until(unsigned long long ending_point)
     return locator;
 }
 
+unsigned long long longest_chain_until_threaded(int threadcount, unsigned long long ending_point)
+{
+    unsigned long long x, seq_length, maximum = 0, locator;
+
+    std::cout << "Longest Collatz sequence in one to your number using " << threadcount << " threads... \n";
+
+    for(x = 2; x <= ending_point; x++) {
+        //std::cout << "Trying " << x << " to look for a longer chain..." << std::endl;
+        seq_length = steps_until_1(x);
+        if(seq_length > maximum) {
+            maximum = seq_length;
+            locator = x;
+            std::cout << "Found longer chain at " << x << " which is " << seq_length << " steps long." << std::endl;
+        }
+    }
+
+    return locator;
+}
+
 int main(int argc, char** argv)
 {
     char solver_choice;
@@ -73,6 +93,12 @@ int main(int argc, char** argv)
         std::cout << "Enter the number to test: ";
         std::cin >> begin;
         std::cout << std::endl << "Output: " << steps_until_1(begin) << std::endl;
+    } else if(solver_choice == 't') {
+        unsigned long long begin;
+        int threadcount;
+        std::cout << "Enter the number of threads, then the number to test to: ";
+        std::cin >> threadcount >> begin;
+        std::cout << std::endl << "Output: " << longest_chain_until_threaded(threadcount, begin) << std::endl;
     }
 
     return 0;
