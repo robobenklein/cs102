@@ -1,6 +1,11 @@
+#include <chrono>
 #include <iostream>
-#include <stdio.h>
 #include <thread>
+
+struct collatz_upair {
+    unsigned long long locator;
+    unsigned long long chain;
+};
 
 unsigned long long modify(unsigned long long original)
 {
@@ -46,7 +51,7 @@ unsigned long long longest_chain_until(unsigned long long ending_point)
     printf("Longest Collatz sequence in one to your number... \n");
 
     for(x = 2; x <= ending_point; x++) {
-        //std::cout << "Trying " << x << " to look for a longer chain..." << std::endl;
+        // std::cout << "Trying " << x << " to look for a longer chain..." << std::endl;
         seq_length = steps_until_1(x);
         if(seq_length > maximum) {
             maximum = seq_length;
@@ -58,23 +63,76 @@ unsigned long long longest_chain_until(unsigned long long ending_point)
     return locator;
 }
 
-unsigned long long longest_chain_until_threaded(int threadcount, unsigned long long ending_point)
+// Returns a pair, locator, chain, of longest seq it finds.
+collatz_upair
+evaluate_numbers_mod_num(unsigned long long ending_point, unsigned long long begin, unsigned long long skip, collatz_upair* output_array)
 {
-    unsigned long long x, seq_length, maximum = 0, locator;
+    unsigned long long x = 0, seq_length = 0, maximum = 0, locator = 0;
 
-    std::cout << "Longest Collatz sequence in one to your number using " << threadcount << " threads... \n";
+    std::string threadname = "[Thread " + std::to_string(int(begin - 2)) + "]";
 
-    for(x = 2; x <= ending_point; x++) {
-        //std::cout << "Trying " << x << " to look for a longer chain..." << std::endl;
+//    std::stringstream beginmsg << threadname << "New thread, Begin: " << begin << " Skip: " << skip << std::endl;
+//    std::cout << beginmsg;
+
+    for(x = begin; x <= ending_point; x += skip) {
         seq_length = steps_until_1(x);
         if(seq_length > maximum) {
             maximum = seq_length;
             locator = x;
-            std::cout << "Found longer chain at " << x << " which is " << seq_length << " steps long." << std::endl;
+            std::cout << threadname << "Found longer chain at " << x << " which is " << seq_length << " steps long."
+                      << std::endl;
         }
     }
 
-    return locator;
+    collatz_upair outputpair;
+    std::cout << threadname << " [RESULT] Storing pair: " << locator << ", " << maximum << std::endl;
+    outputpair.locator = locator;
+    outputpair.chain = maximum;
+    
+    output_array[begin - 2] = outputpair;
+
+    // Number that produced the best result.
+    return outputpair;
+}
+
+unsigned long long longest_chain_until_threaded(int threadcount, unsigned long long ending_point)
+{
+    // unsigned long long locator = 0;
+    int threadid = 0;
+
+    std::cout << "Longest Collatz sequence in one to " << ending_point << " using " << threadcount << " threads... \n";
+
+    std::thread threads[threadcount];
+
+    collatz_upair threads_output[threadcount];
+
+    for(threadid = 0; threadid < threadcount; threadid++) {
+        collatz_upair empty;
+        empty.locator = 0;
+        empty.chain = 0;
+        threads_output[threadid] = empty;
+    }
+
+    for(threadid = 0; threadid < threadcount; threadid++) {
+        std::cout << std::endl << "Creating thread: " << threadid << std::endl;
+        threads[threadid] = std::thread(
+            [&] {evaluate_numbers_mod_num(ending_point, (threadid + 2), threadcount, threads_output); });
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    for(threadid = 0; threadid < threadcount; threadid++) {
+        threads[threadid].join();
+        std::cout << std::endl << "Joined thread " << threadid << std::endl;
+    }
+
+    std::cout << "All threads joined.";
+
+    for(int threadid = 0; threadid < threadcount; threadid++) {
+        std::cout << std::endl << threads_output[threadid].chain;
+    }
+
+    return 0;
 }
 
 int main(int argc, char** argv)
