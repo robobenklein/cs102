@@ -56,5 +56,7 @@ int getNumber(int min, int max)
 {
     // S: This seems to return numbers that are too low by
     // S: exactly 1, what was the formula again?
-    return min + (rand() % (max - min));
+    // A: rand() returns a value between 0.0 and 1.0, but is not inclusive, and if min
+    // A: and max are the same value, then it will attempt %0
+    return min + (rand() % ((max + 1) - min));
 }
