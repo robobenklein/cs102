@@ -4,6 +4,11 @@
 #include <sstream>
 #include <thread>
 
+/* 
+ * 
+ * Mutexes, Semaphores
+ */
+
 struct collatz_upair {
     unsigned long long locator;
     unsigned long long chain;
@@ -12,7 +17,7 @@ struct collatz_upair {
 class collatz_solver
 {
     // Max and location of the max, desired as output.
-    static unsigned long long max_chain, max_locator;
+    unsigned long long max_chain, max_locator;
 
     unsigned long long ending_point, begin, skip;
 
@@ -37,8 +42,8 @@ public:
         
         finished = false;
         
-        max_chain = 0;
-        max_locator = 0;
+        this->max_chain = 0;
+        this->max_locator = 0;
 
         threadname = "[New Solver]";
         std::cout << threadname << " Default Initialized, Begin: " << begin << " Skip: " << skip
@@ -144,7 +149,7 @@ private:
 // End class collatz_solver
 
 collatz_upair call_run_of(collatz_solver solverthing) {
-    return solverthing->run();
+    return solverthing.run();
 }
 
 // Creates a new solver for each thread and starts them.
@@ -170,8 +175,8 @@ unsigned long long longest_chain_until_threaded(int threadcount, unsigned long l
     // Start the solvers in their own threads.
     for(threadid = 0; threadid < threadcount; threadid++) {
         std::cout << std::endl << "Creating thread: " << threadid << std::endl;
-//        threads[threadid] =
-//            std::thread([&] { std::cout << std::to_string(solvers[threadid].run().locator) << std::endl; });
+        threads[threadid] =
+            std::thread([&] { std::cout << std::to_string(solvers[threadid].run().locator) << std::endl; });
 //        threads_output[threadid] = std::async(&solvers[threadid]::run, &solvers[threadid]);
     }
 
