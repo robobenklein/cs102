@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iostream>
+#include <future>
 #include <sstream>
 #include <thread>
 
@@ -11,7 +12,7 @@ struct collatz_upair {
 class collatz_solver
 {
     // Max and location of the max, desired as output.
-    unsigned long long max_chain = 0, max_locator = 0;
+    static unsigned long long max_chain, max_locator;
 
     unsigned long long ending_point, begin, skip;
 
@@ -22,7 +23,7 @@ class collatz_solver
     // Used in loops, not kept.
     unsigned long long x, seq_length;
 
-    bool finished = false;
+    bool finished;
 
 public:
     collatz_solver()
@@ -33,6 +34,11 @@ public:
         ending_point = 2;
         begin = 1;
         skip = 1;
+        
+        finished = false;
+        
+        max_chain = 0;
+        max_locator = 0;
 
         threadname = "[New Solver]";
         std::cout << threadname << " Default Initialized, Begin: " << begin << " Skip: " << skip
@@ -40,10 +46,15 @@ public:
     }
 
 public:
-    collatz_solver(unsigned long long ending_point, unsigned long long begin, unsigned long long skip)
+    void init(unsigned long long ending_point, unsigned long long begin, unsigned long long skip)
     {
         threadname = ("[Thread " + std::to_string(int(begin - 2)) + "]");
+        std::cout << threadname << " Init called, Begin: " << begin << " Skip: " << skip << " End: " << ending_point
+                  << std::endl;
+
+        max_locator = 0;
         outputpair.locator = 0;
+        max_chain = 0;
         outputpair.chain = 0;
 
         ending_point = ending_point;
@@ -52,30 +63,13 @@ public:
     }
 
 public:
-    void init(unsigned long long ending_point, unsigned long long begin, unsigned long long skip)
-    {
-        this->threadname = ("[Thread " + std::to_string(int(begin - 2)) + "]");
-        std::cout << threadname << " Init called, Begin: " << begin << " Skip: " << skip << " End: " << ending_point
-                  << std::endl;
-
-        this->max_locator = 0;
-        this->outputpair.locator = 0;
-        this->max_chain = 0;
-        this->outputpair.chain = 0;
-
-        this->ending_point = ending_point;
-        this->begin = begin;
-        this->skip = skip;
-    }
-
-public:
     collatz_upair run()
     {
-        this->outputpair = this->calculate();
-        std::cout << this->max_locator << " | " << this->max_chain << std::endl;
+        outputpair = calculate();
+//        printf((threadname + std::to_string(max_locator) + " | " + std::to_string(max_chain)));
         // this->outputpair.locator = this->max_locator;
         // this->outputpair.chain = this->max_chain;
-        this->finished = true;
+        finished = true;
         return outputpair;
     }
 
@@ -86,7 +80,7 @@ public:
     }
 
     // Used as one 'step' of the chain.
-    unsigned long long modify(unsigned long long original)
+    static unsigned long long modify(unsigned long long original)
     {
         if(original == 1 || original == 0) {
             return 1;
@@ -109,7 +103,7 @@ public:
 
     // Counts how many steps it takes for the number to reach 1, returns number of steps.
     // In and Out are unlonglong numbers.
-    unsigned long long steps_until_1(unsigned long long number)
+    static unsigned long long steps_until_1(unsigned long long number)
     {
         unsigned long long current, steps;
         current = number;
@@ -125,29 +119,33 @@ public:
 private:
     collatz_upair calculate()
     {
-        this->max_chain = 0;
-        this->max_locator = 0;
-        this->seq_length = 0;
+        max_chain = 0;
+        max_locator = 0;
+        seq_length = 0;
 
-        for(unsigned long long x = this->begin; x <= this->ending_point; x += this->skip) {
-            this->seq_length = this->steps_until_1(x);
-            if(this->seq_length > this->max_chain) {
-                this->max_chain = this->seq_length;
-                this->max_locator = x;
+        for(unsigned long long x = begin; x <= ending_point; x += skip) {
+            seq_length = steps_until_1(x);
+            if(seq_length > max_chain) {
+                max_chain = seq_length;
+                max_locator = x;
             }
         }
 
         //        std::cout << this->threadname << " [RESULT] Storing pair: " << this->max_locator << ", " <<
         //        this->max_chain
         //                  << std::endl;
-        this->outputpair.locator = this->max_locator;
-        this->outputpair.chain = this->max_chain;
+        outputpair.locator = max_locator;
+        outputpair.chain = max_chain;
 
         // Number that produced the best result.
         return outputpair;
     }
 };
 // End class collatz_solver
+
+collatz_upair call_run_of(collatz_solver solverthing) {
+    return solverthing->run();
+}
 
 // Creates a new solver for each thread and starts them.
 unsigned long long longest_chain_until_threaded(int threadcount, unsigned long long ending_point)
@@ -158,7 +156,9 @@ unsigned long long longest_chain_until_threaded(int threadcount, unsigned long l
 
     collatz_solver solvers[threadcount];
     std::thread threads[threadcount];
-
+    
+//    std::async asyncs[threadcount];
+    
     collatz_upair threads_output[threadcount];
 
     // Initialize the solvers
@@ -170,8 +170,9 @@ unsigned long long longest_chain_until_threaded(int threadcount, unsigned long l
     // Start the solvers in their own threads.
     for(threadid = 0; threadid < threadcount; threadid++) {
         std::cout << std::endl << "Creating thread: " << threadid << std::endl;
-        threads[threadid] =
-            std::thread([&] { std::cout << std::to_string(solvers[threadid].run().locator) << std::endl; });
+//        threads[threadid] =
+//            std::thread([&] { std::cout << std::to_string(solvers[threadid].run().locator) << std::endl; });
+//        threads_output[threadid] = std::async(&solvers[threadid]::run, &solvers[threadid]);
     }
 
     // Min time until joining threads
