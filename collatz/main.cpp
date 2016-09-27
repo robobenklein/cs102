@@ -1,11 +1,11 @@
 #include <chrono>
-#include <iostream>
 #include <future>
+#include <iostream>
 #include <sstream>
 #include <thread>
 
-/* 
- * 
+/*
+ *
  * Mutexes, Semaphores
  */
 
@@ -21,10 +21,12 @@ class collatz_solver
 
     unsigned long long ending_point, begin, skip;
 
-    std::string threadname;
+public:
+    std::string threadname = "[Default]";
 
     collatz_upair outputpair;
 
+private:
     // Used in loops, not kept.
     unsigned long long x, seq_length;
 
@@ -39,11 +41,11 @@ public:
         ending_point = 2;
         begin = 1;
         skip = 1;
-        
+
         finished = false;
-        
-        this->max_chain = 0;
-        this->max_locator = 0;
+
+        max_chain = 0;
+        max_locator = 0;
 
         threadname = "[New Solver]";
         std::cout << threadname << " Default Initialized, Begin: " << begin << " Skip: " << skip
@@ -68,23 +70,23 @@ public:
     }
 
 public:
-    collatz_upair run()
+    void run()
     {
-        outputpair = calculate();
-//        printf((threadname + std::to_string(max_locator) + " | " + std::to_string(max_chain)));
-        // this->outputpair.locator = this->max_locator;
-        // this->outputpair.chain = this->max_chain;
+        calculate();
+        outputpair.locator = max_locator;
+        outputpair.chain = max_chain;
         finished = true;
-        return outputpair;
+        //return outputpair;
     }
 
 public:
     collatz_upair result()
     {
-        return this->outputpair;
+        return outputpair;
     }
 
     // Used as one 'step' of the chain.
+private:
     static unsigned long long modify(unsigned long long original)
     {
         if(original == 1 || original == 0) {
@@ -110,10 +112,9 @@ public:
     // In and Out are unlonglong numbers.
     static unsigned long long steps_until_1(unsigned long long number)
     {
-        unsigned long long current, steps;
+        unsigned long long current, steps = 0;
         current = number;
-        steps = 0;
-        while(current != 1 && current != 0) {
+        while(current != 1 && current > 0) {
             steps = steps + 1;
             current = modify(current);
         }
@@ -122,10 +123,8 @@ public:
 
     // Returns a pair, locator, chain, of longest seq it finds.
 private:
-    collatz_upair calculate()
+    void calculate()
     {
-        max_chain = 0;
-        max_locator = 0;
         seq_length = 0;
 
         for(unsigned long long x = begin; x <= ending_point; x += skip) {
@@ -136,21 +135,15 @@ private:
             }
         }
 
-        //        std::cout << this->threadname << " [RESULT] Storing pair: " << this->max_locator << ", " <<
-        //        this->max_chain
-        //                  << std::endl;
+        // Sets found values into outputpair, m
         outputpair.locator = max_locator;
         outputpair.chain = max_chain;
 
         // Number that produced the best result.
-        return outputpair;
+        //return outputpair;
     }
 };
 // End class collatz_solver
-
-collatz_upair call_run_of(collatz_solver solverthing) {
-    return solverthing.run();
-}
 
 // Creates a new solver for each thread and starts them.
 unsigned long long longest_chain_until_threaded(int threadcount, unsigned long long ending_point)
@@ -161,9 +154,9 @@ unsigned long long longest_chain_until_threaded(int threadcount, unsigned long l
 
     collatz_solver solvers[threadcount];
     std::thread threads[threadcount];
-    
-//    std::async asyncs[threadcount];
-    
+
+    //    std::async asyncs[threadcount];
+
     collatz_upair threads_output[threadcount];
 
     // Initialize the solvers
@@ -176,8 +169,8 @@ unsigned long long longest_chain_until_threaded(int threadcount, unsigned long l
     for(threadid = 0; threadid < threadcount; threadid++) {
         std::cout << std::endl << "Creating thread: " << threadid << std::endl;
         threads[threadid] =
-            std::thread([&] { std::cout << std::to_string(solvers[threadid].run().locator) << std::endl; });
-//        threads_output[threadid] = std::async(&solvers[threadid]::run, &solvers[threadid]);
+            std::thread([&] { std::cout << std::to_string(solvers[threadid].result().locator) << std::endl; });
+        // threads_output[threadid] = std::async(&solvers[threadid]::run, &solvers[threadid]);
     }
 
     // Min time until joining threads
