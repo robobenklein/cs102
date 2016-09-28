@@ -5,7 +5,7 @@
   <Project Name="debugA" Path="debugA/debugA.project" Active="No"/>
   <Project Name="labB" Path="labB/labB.project" Active="No"/>
   <Project Name="debugB" Path="debugB/debugB.project" Active="No"/>
-  <Project Name="collatz" Path="collatz/collatz.project" Active="Yes"/>
+  <Project Name="collatz" Path="collatz/collatz.project" Active="No"/>
   <Project Name="conditionals-tests" Path="conditionals-tests/conditionals-tests.project" Active="No"/>
   <Project Name="labC" Path="labC/labC.project" Active="No"/>
   <Project Name="debugC" Path="debugC/debugC.project" Active="No"/>
@@ -14,6 +14,8 @@
   <Project Name="labE" Path="labE/labE.project" Active="No"/>
   <Project Name="debugE" Path="debugE/debugE.project" Active="No"/>
   <Project Name="books" Path="books/books.project" Active="No"/>
+  <Project Name="debugF" Path="debugF/debugF.project" Active="No"/>
+  <Project Name="labF" Path="labF/labF.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -31,6 +33,8 @@
       <Project Name="labE" ConfigName="Debug"/>
       <Project Name="debugE" ConfigName="Debug"/>
       <Project Name="books" ConfigName="Debug"/>
+      <Project Name="debugF" ConfigName="Debug"/>
+      <Project Name="labF" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -48,6 +52,8 @@
       <Project Name="labE" ConfigName="Release"/>
       <Project Name="debugE" ConfigName="Release"/>
       <Project Name="books" ConfigName="Release"/>
+      <Project Name="debugF" ConfigName="Release"/>
+      <Project Name="labF" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
