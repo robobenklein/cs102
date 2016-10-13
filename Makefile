@@ -1,8 +1,8 @@
 .PHONY: clean All
 
 All:
-	@echo "----------Building project:[ labF - Debug ]----------"
-	@cd "labF" && "$(MAKE)" -f  "labF.mk"
+	@echo "----------Building project:[ fileintoarray - Debug ]----------"
+	@cd "fileintoarray" && "$(MAKE)" -f  "fileintoarray.mk"
 clean:
-	@echo "----------Cleaning project:[ labF - Debug ]----------"
-	@cd "labF" && "$(MAKE)" -f  "labF.mk" clean
+	@echo "----------Cleaning project:[ fileintoarray - Debug ]----------"
+	@cd "fileintoarray" && "$(MAKE)" -f  "fileintoarray.mk" clean

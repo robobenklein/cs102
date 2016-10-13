@@ -1,0 +1,17 @@
+87 S
+90 S
+88 S
+89 P
+78 P
+88 P
+78 F
+77 F
+78 W
+66 W
+76 W
+87 W
+
+Read this data into 4 vectors (depending on the code),  sum the values as you put them in the vectors
+
+Output the final size of each vector. 
+Output the average of each vector.  

@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <stdio.h>
 
@@ -8,13 +9,13 @@ void menu_select(int& choice);
 class math_stack
 {
 
-    int left = 0, right = 0, resultnum = 0;
+    double left = 0.0, right = 0.0, resultnum = 0.0;
 
 public:
     // Access functions
-    void setLeft(int new_left);
-    void setRight(int new_right);
-    int getResult();
+    void setLeft(double new_left);
+    void setRight(double new_right);
+    double getResult();
 
     // Operations
     void Multiply();
@@ -27,11 +28,54 @@ public:
 int main(int argc, char** argv)
 {
     int operation;
-    // Get operation:
-    menu_select(operation);
+    double left, right;
+    math_stack maththing;
 
-    if(operation == 6) {
-        return 0;
+    while(operation != 6) {
+        // Get operation:
+        menu_select(operation);
+
+        while(operation < 1 || operation > 6) {
+            menu_select(operation);
+        }
+        // Do we quit?
+        if(operation == 6) {
+            break;
+        }
+
+        // Two operands on the same line.
+        cout << "Enter operands: ";
+        cin >> left >> right;
+        maththing.setLeft(left);
+        maththing.setRight(right);
+
+        switch(operation) {
+        case 1:
+            // Add
+            maththing.Add();
+            break;
+        case 2:
+            maththing.Subtract();
+            break;
+        case 3:
+            maththing.Multiply();
+            break;
+        case 4:
+            maththing.Divide();
+            break;
+        case 5:
+            maththing.Exponent();
+            break;
+        }
+
+        // Done calculations
+        cout << endl;
+        cout << "Result = ";
+        cout.setf(ios::fixed);
+        cout.setf(ios::showpoint);
+        cout.precision(3);
+        cout << maththing.getResult();
+        cout << endl;
     }
     // Get operands:
 
@@ -47,19 +91,45 @@ void menu_select(int& choice)
             "5. Exponent\n"
             "6. Quit"
          << endl;
-    cout << "Enter operation:";
+    cout << "Enter operation: ";
     cin >> choice;
 }
 
 // Access functions
-void math_stack::setLeft(int new_left) {};
-void math_stack::setRight(int new_right) {};
-int math_stack::getResult() {};
+
+void math_stack::setLeft(double new_left)
+{
+    left = new_left;
+};
+void math_stack::setRight(double new_right)
+{
+    right = new_right;
+};
+
+double math_stack::getResult()
+{
+    return resultnum;
+};
 
 // Operations for math_stack
 
-void math_stack::Multiply(){};
-void math_stack::Divide(){};
-void math_stack::Add(){};
-void math_stack::Subtract(){};
-void math_stack::Exponent(){};
+void math_stack::Multiply()
+{
+    resultnum = left * right;
+};
+void math_stack::Divide()
+{
+    resultnum = left / right;
+};
+void math_stack::Add()
+{
+    resultnum = left + right;
+};
+void math_stack::Subtract()
+{
+    resultnum = left - right;
+};
+void math_stack::Exponent()
+{
+    resultnum = pow(left, right);
+};
