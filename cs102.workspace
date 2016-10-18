@@ -17,7 +17,8 @@
   <Project Name="debugF" Path="debugF/debugF.project" Active="No"/>
   <Project Name="labF" Path="labF/labF.project" Active="No"/>
   <Project Name="labG" Path="labG/labG.project" Active="No"/>
-  <Project Name="fileintoarray" Path="fileintoarray/fileintoarray.project" Active="Yes"/>
+  <Project Name="fileintoarray" Path="fileintoarray/fileintoarray.project" Active="No"/>
+  <Project Name="labH" Path="labH/labH.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -39,6 +40,7 @@
       <Project Name="labF" ConfigName="Debug"/>
       <Project Name="labG" ConfigName="Debug"/>
       <Project Name="fileintoarray" ConfigName="Debug"/>
+      <Project Name="labH" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -60,6 +62,7 @@
       <Project Name="labF" ConfigName="Release"/>
       <Project Name="labG" ConfigName="Release"/>
       <Project Name="fileintoarray" ConfigName="Release"/>
+      <Project Name="labH" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
