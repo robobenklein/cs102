@@ -19,6 +19,8 @@ int get_student_numbers(ifstream& infile, Student students[]);
 
 void reverse_students(Student students[], int studentnum);
 
+void output_students(ofstream& outfile, Student students[], int studentnum);
+
 int main(int argc, char** argv)
 {
     string filename_input, filename_output;
@@ -32,13 +34,30 @@ int main(int argc, char** argv)
     cout << "Enter output filename: ";
     cin >> filename_output;
 
+    file_input.open(filename_input);
+    file_output.open(filename_output);
+
+    if(file_input.fail()) {
+        cout << "Unable to open input file.\n";
+        return 0;
+    }
+
     // First function, reads in the data & stores it
     num_students = get_student_numbers(file_input, students);
+
+    if(num_students == 0) {
+        file_output << "No students to report.\n";
+        return 0;
+    }
 
     // Second function, since the student names are in reverse
     reverse_students(students, num_students);
 
     // Third function, writes output file with formatting.
+    output_students(file_output, students, num_students);
+
+    file_input.close();
+    file_output.close();
 
     return 0;
 }
@@ -50,20 +69,32 @@ int get_student_numbers(ifstream& infile, Student students[])
     int studentnum = 0;
 
     while(getline(infile, linestring)) {
-        linestream.str(linestring);
-        linestream >> students[studentnum].firstname >> students[studentnum].lastname;
-
-        double temp_score, score_sum = 0;
-        int score_count = 0;
-        while(linestream >> temp_score) {
-            score_count += 1;
-            score_sum += temp_score;
+        if (studentnum == MAX_STUDENTS) {
+            // Reached the max number of students to read in,
+            break;
         }
-        students[studentnum].averagescore = (score_sum / (score_count * 1.0));
+        if(linestring == "" || linestring == " ") {
+            // No student data on this line
+        } else {
+            linestream.clear();
+            linestream.str(linestring);
+            linestream >> students[studentnum].firstname;
+            linestream >> students[studentnum].lastname;
 
-        studentnum += 1;
-        linestream.clear();
-        linestring = "";
+            double temp_score = 0, score_sum = 0;
+            int score_count = 0;
+            while(linestream >> temp_score) {
+                score_count += 1;
+                score_sum += temp_score;
+            }
+            if(score_count != 0.0)
+                students[studentnum].averagescore = (score_sum / (score_count * 1.0));
+            else
+                students[studentnum].averagescore = 0.0;
+
+            studentnum += 1;
+            linestring = "";
+        }
     }
 
     return studentnum;
@@ -71,30 +102,34 @@ int get_student_numbers(ifstream& infile, Student students[])
 
 // From http://utk.claranguyen.me/cs102/lab.php?id=cs102f16_lab9
 // Good reversal example, can still be applied to object instead of chars
-void reverse_strings(string lines[], int count)
-{
-    char temp;
-    int length, end;
-    for(int i = 0; i < count; i++) {
-        length = lines[i].length();
-        for(int j = 0; j < length / 2; j++) {
-            temp = lines[i][j];
-            end = length - j - 1;
-            lines[i][j] = lines[i][end];
-            lines[i][end] = temp;
-        }
-    }
-}
 
 void reverse_students(Student students[], int studentnum)
 {
     Student temp_student;
     int otheritem;
 
-    for (int i = 0; i < studentnum / 2; i++) {
+    for(int i = 0; i < studentnum / 2; i++) {
         temp_student = students[i];
         otheritem = studentnum - i - 1;
         students[i] = students[otheritem];
         students[otheritem] = temp_student;
+    }
+}
+
+void output_students(ofstream& outfile, Student students[], int studentnum)
+{
+    outfile.setf(ios::fixed);
+    outfile.setf(ios::showpoint);
+    outfile.precision(2);
+
+    for(int i = 0; i < studentnum; i++) {
+        ostringstream outstr;
+        outstr << students[i].lastname << ", " << students[i].firstname;
+
+        outfile.width(20 + 1);
+        outfile << left << outstr.str();
+        outfile << "= " << students[i].averagescore;
+
+        outfile << endl;
     }
 }
