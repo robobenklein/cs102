@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/robo/code/utk/cs102/cs102.workspace">
-  <int Value="2" Name="m_selectedTab"/>
+  <int Value="3" Name="m_selectedTab"/>
   <wxString Value="/home/robo/code/utk/cs102/cs102.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
@@ -19,8 +19,15 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/robo/code/utk/cs102/labI/main.cpp" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="84" Name="CurrentLine"/>
+      <int Value="106" Name="FirstVisibleLine"/>
+      <int Value="104" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/robo/code/utk/cs102/labJ/main.cpp" Name="FileName"/>
+      <int Value="73" Name="FirstVisibleLine"/>
+      <int Value="97" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
