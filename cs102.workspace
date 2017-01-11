@@ -16,12 +16,14 @@
   <Project Name="books" Path="books/books.project" Active="No"/>
   <Project Name="debugF" Path="debugF/debugF.project" Active="No"/>
   <Project Name="labF" Path="labF/labF.project" Active="No"/>
-  <Project Name="labG" Path="labG/labG.project" Active="No"/>
+  <Project Name="labG" Path="labG/labG.project" Active="Yes"/>
   <Project Name="fileintoarray" Path="fileintoarray/fileintoarray.project" Active="No"/>
   <Project Name="labH" Path="labH/labH.project" Active="No"/>
   <Project Name="debugI" Path="debugI/debugI.project" Active="No"/>
   <Project Name="labI" Path="labI/labI.project" Active="No"/>
-  <Project Name="labJ" Path="labJ/labJ.project" Active="Yes"/>
+  <Project Name="labJ" Path="labJ/labJ.project" Active="No"/>
+  <Project Name="hakd" Path="hakd/hakd.project"/>
+  <Project Name="labJ-d" Path="labJ-d/labJ-d.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -47,6 +49,8 @@
       <Project Name="debugI" ConfigName="Debug"/>
       <Project Name="labI" ConfigName="Debug"/>
       <Project Name="labJ" ConfigName="Debug"/>
+      <Project Name="hakd" ConfigName="Debug"/>
+      <Project Name="labJ-d" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -72,6 +76,8 @@
       <Project Name="debugI" ConfigName="Release"/>
       <Project Name="labI" ConfigName="Release"/>
       <Project Name="labJ" ConfigName="Release"/>
+      <Project Name="hakd" ConfigName="Release"/>
+      <Project Name="labJ-d" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
